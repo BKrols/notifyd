@@ -12,6 +12,8 @@ public:
     virtual bool operator <= (const ItemBase& oth) const final 	{ return operator<(oth) || operator==(oth); }
     virtual bool operator > (const ItemBase& oth) const final	{ return !operator<(oth) && !operator==(oth); }
     virtual bool operator >= (const ItemBase& oth) const final 	{ return operator>(oth) || operator==(oth); }
+
+    virtual std::ostream& output(std::ostream& out) const = 0;
 };
 
 #endif // _ITEM_BASE_H

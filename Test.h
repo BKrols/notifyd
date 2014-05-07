@@ -16,6 +16,7 @@ void test1(T first, T last)
         else
             break;
     }
+
     root.print();
 }
 
