@@ -1,13 +1,12 @@
 #ifndef _NODE_H_
 #define _NODE_H_
 
-#include <ostream>
+#include <iostream>
 #include <memory>
 #include <vector>
 #include <utility>
 #include <iomanip>
 
-// TODO check Node* pointers
 template <typename ITEM>
 class Node
 {
@@ -45,8 +44,7 @@ public:
 
     static iterator end() { static childs_t end; return iterator(&end, end.end()); };
 public:
-    Node(const ITEM& item) : _node(new ITEM(item)), _parent(0), _size(0) { increaseSize(this); }
-    Node(const ITEM& item, Node* parent) : _node(new ITEM(item)), _parent(parent), _size(0) { increaseSize(this); }
+    Node(const ITEM& item, Node* parent = 0) : _node(new ITEM(item)), _parent(parent), _size(0) { increaseSize(this); }
     ~Node() { decreaseSize(this); }
 
     size_t size() { return _size; }
@@ -149,22 +147,24 @@ public:
         return it.has_elem() ? it->get() : 0;
     }
 
+    ITEM& getValue()  { return *_node; }
+
+    Node* getParent() { return _parent; }
+
 private:
     void increaseSize(Node* node, size_t size = 1)
     {
         node->_size += size;
-        while(node = getParent(node))
+        while(node = node->getParent())
             node->_size += size;
     }
 
     void decreaseSize(Node* node, size_t size = 1)
     {
         node->_size -= size;
-        while(node = getParent(node))
+        while(node = node->getParent())
             node->_size -= size;
     }
-
-    Node* getParent(Node* node) { return node->_parent; }
 
     childs_t* getChilds(const ITEM& child)
     {

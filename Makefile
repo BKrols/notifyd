@@ -24,15 +24,27 @@ LIBS     :=
 # specific includes
 INCLUDES :=
 
-ALL_INCLUDES = -I./
+ALL_INCLUDES = -I./ -I./containers -I./elements -I./inotify -I./test
 
 # list of *.cpp
-SOURCES :=                                              \
-            $(SRCDIR)/main.cpp                          \
+SOURCES :=  $(SRCDIR)/main.cpp                \
+            $(SRCDIR)/inotify/InotifyImpl.cpp \
+
+ifdef test
+    DEFINES += -DTEST
+endif
 
 .PHONY: all
 all:
 	@echo compiling
-	g++ $(SOURCES) $(ALL_INCLUDES) $(LIBS) $(CFLAGS) -o $(MODNAME)
+	g++ $(SOURCES) $(ALL_INCLUDES) $(LIBS) $(CFLAGS) $(DEFINES) -o $(MODNAME)
 	@echo ok
 
+.PHONY: clean
+clean:
+	@echo cleaning $(MODNAME)
+	@rm -f $(MODNAME)
+
+.PHONY: test
+test:
+	@make test=1
